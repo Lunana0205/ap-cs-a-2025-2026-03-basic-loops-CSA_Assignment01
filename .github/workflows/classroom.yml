@@ -1,0 +1,70 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: GetCheck Test
+      id: getcheck-test
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: GetCheck Test
+        setup-command: mvn compile
+        command: mvn -Dtest=GetCheckTest test
+        timeout: 3
+        max-score: 4
+    - name: HailstoneLength Test
+      id: hailstonelength-test
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: HailstoneLength Test
+        setup-command: mvn compile
+        command: mvn -Dtest=HailstoneLengthTest test
+        timeout: 3
+        max-score: 4
+    - name: IsLongSeq Test
+      id: islongseq-test
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: IsLongSeq Test
+        setup-command: mvn compile
+        command: mvn -Dtest=IsLongSeqTest test
+        timeout: 3
+        max-score: 4
+    - name: IsValid Test
+      id: isvalid-test
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: IsValid Test
+        setup-command: mvn compile
+        command: mvn -Dtest=IsValidTest test
+        timeout: 3
+        max-score: 4
+    - name: PropLong Test
+      id: proplong-test
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: PropLong Test
+        setup-command: mvn compile
+        command: mvn -Dtest=PropLongTest test
+        timeout: 3
+        max-score: 4
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        GETCHECK-TEST_RESULTS: "${{steps.getcheck-test.outputs.result}}"
+        HAILSTONELENGTH-TEST_RESULTS: "${{steps.hailstonelength-test.outputs.result}}"
+        ISLONGSEQ-TEST_RESULTS: "${{steps.islongseq-test.outputs.result}}"
+        ISVALID-TEST_RESULTS: "${{steps.isvalid-test.outputs.result}}"
+        PROPLONG-TEST_RESULTS: "${{steps.proplong-test.outputs.result}}"
+      with:
+        runners: getcheck-test,hailstonelength-test,islongseq-test,isvalid-test,proplong-test
