@@ -3,7 +3,7 @@ public class CheckDigit {
     
     /** Returns the number of digits in num. */
     public static int getNumberOfDigits(int num) {
-        if (num == 0) return 1;
+        if (num == 0) return 1; 
         int count = 0;
         while (num != 0) {
             num = num / 10;
