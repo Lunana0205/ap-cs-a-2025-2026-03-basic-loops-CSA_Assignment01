@@ -3,6 +3,7 @@ public class CheckDigit {
     
     /** Returns the number of digits in num. */
     public static int getNumberOfDigits(int num) {
+        if (num == 0) return 1;
         int count = 0;
         while (num != 0) {
             num = num / 10;
@@ -36,8 +37,17 @@ public class CheckDigit {
      * getCheck returns 2
      */
     public static int getCheck(int num) {
+        int sum = 0;
+        int numDigits = getNumberOfDigits(num);
+        for(int i=1; i<=numDigits; i++){
+            int digit = getDigit(num, i);
+            int weight = 8 - i; 
+            sum += digit * weight;
 
-        return 0;
+        }
+        return sum % 10;
+
+
     }
 
 
@@ -53,7 +63,16 @@ public class CheckDigit {
      * isValid(17325) returns false :: 5 is NOT the check digit of 1732
      */
     public static boolean isValid(int numWithCheckDigit) {
+        int check = numWithCheckDigit % 10;
+        int left = numWithCheckDigit / 10;
 
+        int expected = getCheck (left);
+        if(check == expected){
+            return true;
+        }
         return false;
+
     }
 }
+
+
